@@ -39,6 +39,10 @@ npm run android
 The web build is a real, installable target; the same code compiles to native
 iOS/Android.
 
+Prefer a task runner? A [`Taskfile.yml`](Taskfile.yml) wraps the common flows —
+`task install`, `task web`, `task ios`, `task check` (typecheck + lint),
+`task build:web`, `task reset`. Run `task` to list them all.
+
 ## Go live with Vidu S1
 
 Create a `.env` (see `.env.example`):

@@ -1,0 +1,100 @@
+# Task runner for Presence — https://taskfile.dev
+# Install Task: https://taskfile.dev/installation/  (e.g. `brew install go-task/tap/go-task`)
+# Run `task` with no args to list everything below.
+version: '3'
+
+vars:
+  EXPO: npx expo
+
+tasks:
+  default:
+    desc: List all available tasks
+    cmds:
+      - task --list
+    silent: true
+
+  # ---- setup -----------------------------------------------------------------
+  install:
+    desc: Install dependencies
+    cmds:
+      - npm install
+    sources:
+      - package.json
+      - package-lock.json
+    generates:
+      - node_modules/.package-lock.json
+
+  env:
+    desc: Create a .env from the example (edit it to add your Vidu key)
+    cmds:
+      - cp -n .env.example .env
+      - echo "Wrote .env — add EXPO_PUBLIC_VIDU_API_KEY to go live."
+    status:
+      - test -f .env
+
+  # ---- run -------------------------------------------------------------------
+  start:
+    desc: Start the Expo dev server (pick a platform from the menu)
+    deps: [install]
+    cmds:
+      - '{{.EXPO}} start'
+
+  web:
+    desc: Run the app in a web browser
+    deps: [install]
+    cmds:
+      - '{{.EXPO}} start --web'
+
+  ios:
+    desc: Run the app on an iOS simulator / device
+    deps: [install]
+    cmds:
+      - '{{.EXPO}} start --ios'
+
+  android:
+    desc: Run the app on an Android emulator / device
+    deps: [install]
+    cmds:
+      - '{{.EXPO}} start --android'
+
+  # ---- quality ---------------------------------------------------------------
+  typecheck:
+    desc: Type-check the project with TypeScript
+    cmds:
+      - npx tsc --noEmit
+
+  lint:
+    desc: Lint with Expo's ESLint config
+    cmds:
+      - '{{.EXPO}} lint'
+
+  check:
+    desc: Run typecheck and lint (use before pushing)
+    cmds:
+      - task: typecheck
+      - task: lint
+
+  doctor:
+    desc: Diagnose dependency / config issues
+    cmds:
+      - npx expo-doctor
+
+  # ---- build -----------------------------------------------------------------
+  build:web:
+    desc: Export a static web build to dist/
+    deps: [install]
+    cmds:
+      - '{{.EXPO}} export --platform web'
+
+  # ---- housekeeping ----------------------------------------------------------
+  clean:
+    desc: Remove caches and build output
+    cmds:
+      - rm -rf .expo dist web-build node_modules/.cache
+
+  reset:
+    desc: Clean, then reinstall dependencies from scratch
+    cmds:
+      - task: clean
+      - rm -rf node_modules
+      - task: install
