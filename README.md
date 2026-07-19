@@ -39,9 +39,17 @@ npm run android
 The web build is a real, installable target; the same code compiles to native
 iOS/Android.
 
-Prefer a task runner? A [`Taskfile.yml`](Taskfile.yml) wraps the common flows —
-`task install`, `task web`, `task ios`, `task check` (typecheck + lint),
-`task build:web`, `task reset`. Run `task` to list them all.
+Prefer a task runner? [Task](https://taskfile.dev) ships as a devDependency, so
+`npm install` brings it along. A [`Taskfile.yml`](Taskfile.yml) wraps the common
+flows — run them with `npx task <name>` (or `npm run task -- <name>`):
+
+```bash
+npx task            # list every task
+npx task web        # run on web
+npx task ios        # run on iOS
+npx task check      # typecheck + lint
+npx task build:web  # static web export
+```
 
 ## Go live with Vidu S1
 

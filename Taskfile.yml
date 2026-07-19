@@ -1,5 +1,7 @@
 # Task runner for Presence — https://taskfile.dev
-# Install Task: https://taskfile.dev/installation/  (e.g. `brew install go-task/tap/go-task`)
+# Task ships with the project as a devDependency (@go-task/cli), so `npm install`
+# installs it. Run it via `npx task <name>` or `npm run task -- <name>`
+# (or install globally: https://taskfile.dev/installation/).
 # Run `task` with no args to list everything below.
 version: '3'
 
